@@ -7,4 +7,4 @@ Lipid panel mismatch,10 patients with |residual| > 40,"Kept, flagged",Sensitivit
 Extreme labs,"Glucose 575, CRP 43.4, Triglycerise 838",Kept: real cilinical values,None
 Comorbidity levels 2 and 3,n=1 and n= 2,"Merged into ""2 or more""",None
 Near-constant flags,"CAD, Hypothyroidism, Hyperlipidemia: 12, 9, 8 cases",Kept,D not over-interpret their importanct
-Lable direction,UCI coding vs feature profile disagree,Open question,Group to decide and document
+Lable direction,"UCI: 0 = gallstones, 1 = none","Kept as is, documented",1 = NO gallstones; flip when interpreting
