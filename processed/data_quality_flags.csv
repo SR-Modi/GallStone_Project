@@ -1,0 +1,10 @@
+issue,detail,action_taken,follow_up
+CRP ceros,125 patients (39%) have CRP,Kept; added CRP_below_detection flag,"Treat as low, not missing"
+Triglyceride unit error,Index 127 = 1.39 (mmol/L value),Multiplied by 88.57 -> 123.1,Mention in methods
+HDL = 273,Index 138; LBL + HDL exceeds total cholesterol by 132,"Flagged, not changed",Re-run models without this row
+Obesity = 1954,Index 239; impossible for BMI 29.3,Replaced with median of the rest,Group decision; flag in report
+Lipid panel mismatch,10 patients with |residual| > 40,"Kept, flagged",Sensitivity check wihtout them
+Extreme labs,"Glucose 575, CRP 43.4, Triglycerise 838",Kept: real cilinical values,None
+Comorbidity levels 2 and 3,n=1 and n= 2,"Merged into ""2 or more""",None
+Near-constant flags,"CAD, Hypothyroidism, Hyperlipidemia: 12, 9, 8 cases",Kept,D not over-interpret their importanct
+Lable direction,UCI coding vs feature profile disagree,Open question,Group to decide and document

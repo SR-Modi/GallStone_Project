@@ -1,0 +1,40 @@
+feature,group,full_name
+Age,demographic,Age
+Gender,demographic,Gender
+Height,demographic,Height
+Weight,demographic,Weight
+BMI,demographic,Body Mass Index (BMI)
+Comorbidity,comorbidity,Comorbidity
+CAD,comorbidity,Coronary Artery Disease (CAD)
+Hypothyroidism,comorbidity,Hypothyroidism
+Hyperlipidemia,comorbidity,Hyperlipidemia
+DM,comorbidity,Diabetes Mellitus (DM)
+TBW,bioimpedance,Total Body Water (TBW)
+ECW,bioimpedance,Extracellular Water (ECW)
+ICW,bioimpedance,Intracellular Water (ICW)
+ECF_TBW,bioimpedance,Extracellular Fluid/Total Body Water (ECF/TBW)
+TBFR,bioimpedance,Total Body Fat Ratio (TBFR) (%)
+LM,bioimpedance,Lean Mass (LM) (%)
+Protein,bioimpedance,Body Protein Content (Protein) (%)
+VFR,bioimpedance,Visceral Fat Rating (VFR)
+BM,bioimpedance,Bone Mass (BM)
+MM,bioimpedance,Muscle Mass (MM)
+Obesity,bioimpedance,Obesity (%)
+TFC,bioimpedance,Total Fat Content (TFC)
+VFA,bioimpedance,Visceral Fat Area (VFA)
+VMA,bioimpedance,Visceral Muscle Area (VMA) (Kg)
+HFA,bioimpedance,Hepatic Fat Accumulation (HFA)
+Glucose,laboratory,Glucose
+TC,laboratory,Total Cholesterol (TC)
+LDL,laboratory,Low Density Lipoprotein (LDL)
+HDL,laboratory,High Density Lipoprotein (HDL)
+Triglyceride,laboratory,Triglyceride
+AST,laboratory,Aspartat Aminotransferaz (AST)
+ALT,laboratory,Alanin Aminotransferaz (ALT)
+ALP,laboratory,Alkaline Phosphatase (ALP)
+Creatinine,laboratory,Creatinine
+GFR,laboratory,Glomerular Filtration Rate (GFR)
+CRP,laboratory,C-Reactive Protein (CRP)
+HGB,laboratory,Hemoglobin (HGB)
+VitaminD,laboratory,Vitamin D
+CRP_below_detection,laboratory,CRP below detection limit (CRP = 0)
