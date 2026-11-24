@@ -41,7 +41,7 @@ print("Test AUC:", roc_auc_score(y_test, model.predict_proba(X_test)[:, 1]))
 
 
 # %% 2. SHAP values (global explanation)
-explainer = shap.TreeExplainer(model)      # RandomForest / XGBoost
+explainer = shap.TreeExplainer(model)      # RandomForest
 sv = explainer(X_test)
 
 if sv.values.ndim == 3:
@@ -78,6 +78,13 @@ for name, i in cases.items():
     plt.title(f"{name} (patient index {i}, P(gallstone)={proba[i]:.2f})")
     plt.tight_layout(); plt.savefig(f"shap_local_{name}.png", dpi=200); plt.show()
 
+# Errors and CRP: how many missed / false-alarm patients had CRP = 0?
+fn = (pred == 0) & (yt == 1)
+fp = (pred == 1) & (yt == 0)
+print("Missed gallstone patients:", fn.sum(),
+      "| with CRP = 0:", (X_test.loc[fn, "CRP"] == 0).sum())
+print("False alarms:", fp.sum(),
+      "| with CRP > 0:", (X_test.loc[fp, "CRP"] > 0).sum())
 # %% 6. Permutation importance
 from sklearn.inspection import permutation_importance
 pi = permutation_importance(model, X_test, y_test, scoring="roc_auc",
@@ -95,7 +102,9 @@ plt.savefig("perm_importance.png", dpi=200); plt.show()
 # %% 7. Compare with Logistic Regression coefficients
 from sklearn.linear_model import LogisticRegression
 Xs_train = pd.read_csv(P / "X_train_scaled.csv")
-logit = LogisticRegression(max_iter=5000).fit(Xs_train, y_train)
+
+# Same settings as Henriette's model (best CV balanced accuracy 0.799)
+logit = LogisticRegression(C=30, solver="lbfgs", max_iter=5000).fit(Xs_train, y_train)
 coef = pd.Series(logit.coef_[0], index=Xs_train.columns)
 
 
