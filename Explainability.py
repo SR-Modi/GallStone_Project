@@ -1,7 +1,7 @@
-# Carola- Explainability (SHAP + permutation importance)
+# Explainability (SHAP + permutation importance)
 
 
-# %% 1. Load data and the final model from Person 3
+# %% 1. Load data 
 import joblib
 import numpy as np
 import pandas as pd
@@ -15,9 +15,7 @@ X_test = pd.read_csv(P / "X_test.csv")
 y_train = pd.read_csv(P / "y_train.csv").squeeze()
 y_test = pd.read_csv(P / "y_test.csv").squeeze()
 
-# The saved model was made with an older scikit-learn, so Colab (newer) cannot open it.
-# Then we rebuild the SAME Random Forest, with the SAME settings as in
-# DataProcessing_Complete.ipynb (cells 51-55).
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 try:
@@ -35,18 +33,17 @@ except Exception as e:
     model.fit(X_train, y_train)
 print(type(model))
 print(X_train.shape, X_test.shape)
-print(pd.read_csv(P / "ensemble_results.csv"))   # see which model won
+print(pd.read_csv(P / "ensemble_results.csv"))   
 
 
 from sklearn.metrics import roc_auc_score
 print("Test AUC:", roc_auc_score(y_test, model.predict_proba(X_test)[:, 1]))
-# Person 3's Random Forest Test AUC was 0.8506 -> it should be about 0.85.
+
 
 # %% 2. SHAP values (global explanation)
-explainer = shap.TreeExplainer(model)      # for RandomForest / XGBoost
+explainer = shap.TreeExplainer(model)      # RandomForest / XGBoost
 sv = explainer(X_test)
 
-# Random Forest gives 2 classes -> keep only the gallstone class
 if sv.values.ndim == 3:
     sv = sv[:, :, 1]
 
@@ -57,7 +54,7 @@ plt.tight_layout(); plt.savefig("shap_bar.png", dpi=200); plt.show()
 shap.plots.beeswarm(sv, max_display=15, show=False)
 plt.tight_layout(); plt.savefig("shap_beeswarm.png", dpi=200); plt.show()
 
-# %% 4. Dependence plots for the top 4 features
+# %% 4. Dependence plots 
 mean_abs = np.abs(sv.values).mean(axis=0)
 top = X_test.columns[np.argsort(mean_abs)[::-1][:4]]
 print("Top features:", list(top))
@@ -65,7 +62,7 @@ for f in top:
     shap.plots.scatter(sv[:, f], color=sv, show=False)
     plt.tight_layout(); plt.savefig(f"shap_dep_{f}.png", dpi=200); plt.show()
 
-# %% 5. Local explanations (individual patients)
+# %% 5. Local explanations
 proba = model.predict_proba(X_test)[:, 1]
 pred = (proba >= 0.5).astype(int)
 yt = np.asarray(y_test)
@@ -101,7 +98,6 @@ Xs_train = pd.read_csv(P / "X_train_scaled.csv")
 logit = LogisticRegression(max_iter=5000).fit(Xs_train, y_train)
 coef = pd.Series(logit.coef_[0], index=Xs_train.columns)
 
-# NOTE: use Person 2's tuned settings (e.g. C, penalty) if you can.
 
 # %% 8. One comparison table: SHAP vs permutation vs logistic
 comp = pd.DataFrame({
@@ -115,11 +111,10 @@ ranks = ranks.sort_values("avg_rank")
 print(ranks.head(15))
 ranks.to_csv("importance_comparison.csv")
 
-# Do the methods agree? (Spearman rank correlation)
+# Spearman rank correlation
 print(comp.corr(method="spearman"))
 
-# %% 9. Stability check (small dataset -> are the rankings stable?)
-# Re-compute SHAP on bootstrap resamples of the test set.
+# %% 9. Stability check 
 rng = np.random.default_rng(0)
 tops = []
 for _ in range(30):
