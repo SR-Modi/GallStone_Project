@@ -1,7 +1,7 @@
 # Explainability (SHAP + permutation importance)
 
 
-# %% 1. Load data 
+# %% 1. Load data and model.
 import joblib
 import numpy as np
 import pandas as pd
@@ -41,7 +41,7 @@ print("Test AUC:", roc_auc_score(y_test, model.predict_proba(X_test)[:, 1]))
 
 
 # %% 2. SHAP values (global explanation)
-explainer = shap.TreeExplainer(model)      # RandomForest
+explainer = shap.TreeExplainer(model)      # for tree models like Random Forest
 sv = explainer(X_test)
 
 if sv.values.ndim == 3:
@@ -103,7 +103,7 @@ plt.savefig("perm_importance.png", dpi=200); plt.show()
 from sklearn.linear_model import LogisticRegression
 Xs_train = pd.read_csv(P / "X_train_scaled.csv")
 
-# Same settings as Henriette's model (best CV balanced accuracy 0.799)
+# Same settings as the logistic regression in Section III (best C = 30)
 logit = LogisticRegression(C=30, solver="lbfgs", max_iter=5000).fit(Xs_train, y_train)
 coef = pd.Series(logit.coef_[0], index=Xs_train.columns)
 
